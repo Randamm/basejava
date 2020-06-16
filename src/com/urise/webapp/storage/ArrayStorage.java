@@ -31,13 +31,12 @@ public class ArrayStorage {
         int index = getIndex(r);
         if (index != -1) {
             System.out.format("[Error] Resume with uuid: %s already exists \n", r.getUuid());
-            if(index>=10000) {
+            if (index >= 10000) {
                 System.out.format("[Error] Reached a maximum size of %d\n", maxSize);
-
+            } else {
+                storage[size] = r;
+                size++;
             }
-        } else {
-            storage[size] = r;
-            size++;
         }
     }
 
