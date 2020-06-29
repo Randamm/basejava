@@ -7,10 +7,7 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
-    private final int maxSize = 10000;
-    private Resume[] storage = new Resume[maxSize];
-    private int size = 0;
+public class ArrayStorage extends AbstractArrayStorage {
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -31,24 +28,13 @@ public class ArrayStorage {
         int index = getIndex(r);
         if (index != -1) {
             System.out.format("[Error] Resume with uuid: %s already exists \n", r.getUuid());
-            if (index >= 10000) {
-                System.out.format("[Error] Reached a maximum size of %d\n", maxSize);
+            if (index >= STORAGE_LIMIT) {
+                System.out.format("[Error] Reached a maximum size of %d\n", STORAGE_LIMIT);
             } else {
                 storage[size] = r;
                 size++;
             }
         }
-    }
-
-    public Resume get(String uuid) {
-        if (uuid == null) return null;
-
-        int index = getIndex(uuid);
-        if (hasResume(index, uuid)) {
-            return storage[index];
-        }
-
-        return null;
     }
 
     public void delete(String uuid) {
@@ -69,33 +55,16 @@ public class ArrayStorage {
         return Arrays.copyOf(storage, size);
     }
 
-    public int size() {
-        return size;
-    }
-
     private Integer getIndex(Resume r) {
         return getIndex(r.getUuid());
     }
 
-    private int getIndex(String uuid) {
+    protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (uuid.equals(storage[i].getUuid())) {
                 return i;
             }
         }
         return -1;
-    }
-
-    private boolean hasResume(int index, Resume r) {
-        return hasResume(index, r.getUuid());
-    }
-
-    private boolean hasResume(int index, String uuid) {
-        if (index == -1) {
-            System.out.format("[Error] No resume with uuid: %s \n", uuid);
-            return false;
-        } else {
-            return true;
-        }
     }
 }
