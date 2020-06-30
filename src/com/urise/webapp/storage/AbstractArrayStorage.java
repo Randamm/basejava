@@ -30,25 +30,25 @@ public abstract class AbstractArrayStorage implements Storage {
         size = 0;
     }
 
-    public void update(Resume r) {
-        if (r == null || r.getUuid() == null) return;
+    public void update(Resume resume) {
+        if (resume == null || resume.getUuid() == null) return;
 
-        int index = getIndex(r);
-        if (hasResume(index, r)) {
-            storage[index] = r;
+        int index = getIndex(resume);
+        if (hasResume(index, resume)) {
+            storage[index] = resume;
         }
     }
 
-    public void save(Resume r) {
-        if (r == null || r.getUuid() == null) return;
+    public void save(Resume resume) {
+        if (resume == null || resume.getUuid() == null) return;
 
-        int index = getIndex(r);
+        int index = getIndex(resume);
         if (index >= 0) {
-            System.out.format("[Error] Resume with uuid: %s already exists \n", r.getUuid());
+            System.out.format("[Error] Resume with uuid: %s already exists \n", resume.getUuid());
         } else if (size == STORAGE_LIMIT) {
             System.out.format("[Error] Reached a maximum size of %d\n", STORAGE_LIMIT);
         } else {
-            insertElement(r, index);
+            insertElement(resume, index);
             size++;
         }
     }
@@ -68,8 +68,8 @@ public abstract class AbstractArrayStorage implements Storage {
         return Arrays.copyOf(storage, size);
     }
 
-    protected boolean hasResume(int index, Resume r) {
-        return hasResume(index, r.getUuid());
+    protected boolean hasResume(int index, Resume resume) {
+        return hasResume(index, resume.getUuid());
     }
 
     protected boolean hasResume(int index, String uuid) {
@@ -81,13 +81,13 @@ public abstract class AbstractArrayStorage implements Storage {
         return hasResume;
     }
 
-    protected Integer getIndex(Resume r) {
-        return getIndex(r.getUuid());
+    protected Integer getIndex(Resume resume) {
+        return getIndex(resume.getUuid());
     }
 
     protected abstract int getIndex(String uuid);
 
     protected abstract void fillDeletedElement(int index);
 
-    protected abstract void insertElement(Resume r, int index);
+    protected abstract void insertElement(Resume resume, int index);
 }

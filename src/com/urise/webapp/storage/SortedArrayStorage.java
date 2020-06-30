@@ -15,23 +15,16 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void fillDeletedElement(int index) {
-        index++;
-        while (index < STORAGE_LIMIT && storage[index] != null){
-            storage[index-1] = storage[index];
-            storage[index] = null;
-            index++;
+        int shift = size - index - 1;
+        if (shift > 0) {
+            System.arraycopy(storage, index + 1, storage, index, shift);
         }
     }
 
     @Override
-    protected void insertElement(Resume r, int index) {
-        index = -index;
-        Resume buffer = storage[index-1];
-        storage[index-1] = r;
-        while (index < STORAGE_LIMIT && buffer != null){
-            storage[index-1] = buffer;
-            buffer = storage[index];
-            index++;
-        }
+    protected void insertElement(Resume resume, int index) {
+        index = -index - 1;
+        System.arraycopy(storage, index, storage, index + 1, size - index);
+        storage[index] = resume;
     }
 }
