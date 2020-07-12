@@ -2,12 +2,13 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
+import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
-    protected static final int STORAGE_LIMIT = 10000;
+    public static final int STORAGE_LIMIT = 10000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -47,8 +48,8 @@ public abstract class AbstractArrayStorage implements Storage {
         int index = getIndex(resume);
         if (index >= 0) {
             throw new ExistStorageException(resume.getUuid());
-        } else if (size == STORAGE_LIMIT) {
-            System.out.format("[Error] Reached a maximum size of %d\n", STORAGE_LIMIT);
+        } else if (size >= STORAGE_LIMIT) {
+            throw new StorageException("Storage overflow", resume.getUuid());
         } else {
             insertElement(resume, index);
             size++;
