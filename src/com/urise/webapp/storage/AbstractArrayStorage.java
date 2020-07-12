@@ -1,5 +1,7 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.ExistStorageException;
+import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
@@ -44,7 +46,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
         int index = getIndex(resume);
         if (index >= 0) {
-            System.out.format("[Error] Resume with uuid: %s already exists \n", resume.getUuid());
+            throw new ExistStorageException(resume.getUuid());
         } else if (size == STORAGE_LIMIT) {
             System.out.format("[Error] Reached a maximum size of %d\n", STORAGE_LIMIT);
         } else {
@@ -75,10 +77,10 @@ public abstract class AbstractArrayStorage implements Storage {
     protected boolean hasResume(int index, String uuid) {
         boolean hasResume = index != -1;
         if (!hasResume) {
-            System.out.format("[Error] No resume with uuid: %s \n", uuid);
+            throw new NotExistStorageException(uuid);
         }
 
-        return hasResume;
+        return true;
     }
 
     protected Integer getIndex(Resume resume) {
