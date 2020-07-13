@@ -48,7 +48,7 @@ public abstract class AbstractArrayStorageTest {
     public void update() throws Exception {
         Resume newResume = new Resume(INITIAL_UUID_1);
         storage.update(newResume);
-        assertTrue(newResume == storage.get(newResume.getUuid()));
+        assertEquals(newResume, storage.get(newResume.getUuid()));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -77,11 +77,11 @@ public abstract class AbstractArrayStorageTest {
     @Test(expected = StorageException.class)
     public void saveOverflow() throws Exception {
         try {
-            for (int i = 5; i <= AbstractArrayStorage.STORAGE_LIMIT + 1; i++) {
+            for (int i = 3; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
                 storage.save(new Resume());
             }
         } catch (StorageException e) {
-            fail();
+            fail("Exception was thrown before size limit reached");
         }
         storage.save(new Resume());
     }

@@ -15,9 +15,11 @@ public class MainReflection {
         System.out.println(field.get(r));
         field.set(r, "new_uuid");
 
+        System.out.println();
+
+        System.out.println(field.get(r));
         Method method = rClass.getMethod("toString");
         Object result = method.invoke(r);
         System.out.println(result);
-        System.out.println(r);
     }
 }
