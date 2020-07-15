@@ -8,8 +8,10 @@ import com.urise.webapp.model.Resume;
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage implements Storage {
-    protected Resume[] storage = new Resume[STORAGE_LIMIT];
-    protected int size = 0;
+    public static int STORAGE_LIMIT = 10000;
+
+    Resume[] storage = new Resume[STORAGE_LIMIT];
+    int size = 0;
 
     public int size() {
         return size;
@@ -32,8 +34,6 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void update(Resume resume) {
-        if (resume == null || resume.getUuid() == null) return;
-
         int index = getIndex(resume);
         if (hasResume(index, resume)) {
             storage[index] = resume;
@@ -41,8 +41,6 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void save(Resume resume) {
-        if (resume == null || resume.getUuid() == null) return;
-
         int index = getIndex(resume);
         if (index >= 0) {
             throw new ExistStorageException(resume.getUuid());

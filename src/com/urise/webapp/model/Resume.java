@@ -1,5 +1,6 @@
 package com.urise.webapp.model;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -15,6 +16,7 @@ public class Resume implements Comparable<Resume> {
     }
 
     public Resume(String uuid) {
+        Objects.requireNonNull(uuid, "UUID cannot be null");
         this.uuid = uuid;
     }
 
